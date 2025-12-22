@@ -15,6 +15,25 @@
       text-align: center;
     }
 
+    /* TERMINAL INTRO */
+    #terminal {
+      font-family: "SFMono-Regular", Menlo, monospace;
+      background: #020617;
+      color: #22c55e;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 500px;
+      margin: 40px auto;
+      text-align: left;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      white-space: pre-wrap;
+    }
+
+    /* MAIN CONTENT */
+    #main {
+      display: none;
+    }
+
     h1 {
       font-size: 2.2rem;
       margin-bottom: 10px;
@@ -42,29 +61,86 @@
       border-radius: 14px;
       font-size: 1.15rem;
       box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    a:hover {
+      transform: translateY(-2px);
+      background: #1f2933;
     }
 
     footer {
       margin-top: 50px;
       font-size: 0.9rem;
       opacity: 0.6;
+      cursor: pointer;
     }
   </style>
 </head>
 
 <body>
-  <h1>For Jules 💙</h1>
-  <p>
-    Built with love, mild overengineering,
-    and chatgpt lol.
-  </p>
 
-  <div class="container">
-    <a href="https://youtu.be/aM2DoUBh66k">🎥 Message</a>
+  <!-- TERMINAL BOOT -->
+  <div id="terminal">
+    <span id="boot"></span>
   </div>
 
-  <footer>
-    Tap again anytime 🙂
-  </footer>
+  <!-- MAIN PAGE -->
+  <div id="main">
+    <h1>For Jules 💙</h1>
+    <p>
+      Built with love, mild overengineering,
+      and ChatGPT lol.
+    </p>
+
+    <div class="container">
+      <a href="https://youtu.be/aM2DoUBh66k">🎥 Message</a>
+    </div>
+
+    <footer onclick="devMode()">
+      Tap again anytime 🙂
+    </footer>
+  </div>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    const lines = [
+      "Initializing JulesOS v1.0...",
+      "Loading core memories...",
+      "Compiling sibling-support module...",
+      "Running unit tests... ✔",
+      "Deploying Christmas build 🎄",
+      "",
+      "✔ System ready."
+    ];
+
+    let i = 0;
+    const boot = document.getElementById("boot");
+
+    function typeLine() {
+      if (i < lines.length) {
+        boot.textContent += lines[i] + "\n";
+        i++;
+        setTimeout(typeLine, 500);
+      } else {
+        setTimeout(() => {
+          document.getElementById("terminal").style.display = "none";
+          document.getElementById("main").style.display = "block";
+        }, 800);
+      }
+    }
+
+    typeLine();
+
+    function devMode() {
+      alert(
+        "👩‍💻 Dev Mode Activated\n\n" +
+        "Status: Operational\n" +
+        "Errors: None\n" +
+        "Favorite Sibling: You 😉"
+      );
+    }
+  </script>
+
 </body>
 </html>
