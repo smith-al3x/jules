@@ -2,78 +2,160 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>For Jules</title>
+  <title>Happy Birthday Jules! 🥳</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: system-ui, -apple-system;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #0f172a;
       color: #e5e7eb;
       margin: 0;
-      padding: 40px 20px;
+      padding: 20px;
       text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     /* TERMINAL INTRO */
     #terminal {
-      font-family: "SFMono-Regular", Menlo, monospace;
+      font-family: "SFMono-Regular", Consolas, Menlo, monospace;
       background: #020617;
-      color: #22c55e;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 500px;
-      margin: 40px auto;
+      color: #38bdf8;
+      padding: 24px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 480px;
       text-align: left;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
       white-space: pre-wrap;
+      border: 1px solid #1e293b;
     }
 
     /* MAIN CONTENT */
     #main {
       display: none;
+      width: 100%;
+      max-width: 480px;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
       font-size: 2.2rem;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      color: #38bdf8;
     }
 
     p {
-      font-size: 1.1rem;
-      max-width: 420px;
-      margin: 0 auto;
-      opacity: 0.85;
+      font-size: 1.05rem;
+      margin: 0 auto 20px;
+      opacity: 0.9;
+      line-height: 1.5;
     }
 
     .container {
-      max-width: 420px;
-      margin: 40px auto;
+      margin: 20px 0;
     }
 
-    a {
+    a.btn {
       display: block;
-      background: #111827;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
       color: white;
       text-decoration: none;
-      padding: 18px;
-      margin: 16px 0;
+      padding: 16px;
+      margin: 12px 0;
       border-radius: 14px;
-      font-size: 1.15rem;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+      font-size: 1.1rem;
+      font-weight: 600;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
       transition: transform 0.15s ease, background 0.15s ease;
     }
 
-    a:hover {
+    a.btn:hover {
       transform: translateY(-2px);
-      background: #1f2933;
+      background: linear-gradient(135deg, #1d4ed8, #1e40af);
     }
 
+    /* GAME SECTION */
+    .game-card {
+      background: #1e293b;
+      border-radius: 18px;
+      padding: 20px;
+      margin: 25px 0;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      border: 1px solid #334155;
+    }
+
+    .game-card h2 {
+      margin-top: 0;
+      margin-bottom: 6px;
+      font-size: 1.3rem;
+      color: #f43f5e;
+    }
+
+    .score-board {
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      color: #94a3b8;
+    }
+
+    #game-board {
+      background: #020617;
+      border-radius: 10px;
+      border: 2px solid #334155;
+      display: block;
+      margin: 0 auto;
+      touch-action: none;
+    }
+
+    /* MOBILE CONTROLS */
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      max-width: 200px;
+      margin: 15px auto 0;
+    }
+
+    .ctrl-btn {
+      background: #334155;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .ctrl-btn:active {
+      background: #475569;
+    }
+
+    .up { grid-column: 2; }
+    .left { grid-column: 1; grid-row: 2; }
+    .down { grid-column: 2; grid-row: 2; }
+    .right { grid-column: 3; grid-row: 2; }
+
     footer {
-      margin-top: 50px;
-      font-size: 0.9rem;
+      margin-top: 30px;
+      font-size: 0.85rem;
       opacity: 0.6;
       cursor: pointer;
+      user-select: none;
     }
   </style>
 </head>
@@ -87,31 +169,49 @@
 
   <!-- MAIN PAGE -->
   <div id="main">
-    <h1>For Jules 💙</h1>
+    <h1>Happy Birthday Jules! 🎉🎂</h1>
     <p>
-      Built with love, mild overengineering,
-      and ChatGPT lol.
+      Built with love, sibling wisdom,
+      and just enough code to make a game.
     </p>
 
     <div class="container">
-      <a href="https://youtu.be/aM2DoUBh66k">🎥 Message</a>
+      <a class="btn" href="https://youtu.be/dUy6yNcUMs8" target="_blank">🎥 Watch Birthday Message</a>
+    </div>
+
+    <!-- SNAKE MINI GAME -->
+    <div class="game-card">
+      <h2>🎂 Birthday Cake Snake</h2>
+      <div class="score-board">Eat cakes to celebrate! Score: <span id="score">0</span></div>
+      
+      <canvas id="game-board" width="280" height="280"></canvas>
+
+      <!-- On-screen controls for mobile users -->
+      <div class="controls">
+        <button class="ctrl-btn up" onclick="setDirection('UP')">⬆️</button>
+        <button class="ctrl-btn left" onclick="setDirection('LEFT')">⬅️</button>
+        <button class="ctrl-btn down" onclick="setDirection('DOWN')">⬇️</button>
+        <button class="ctrl-btn right" onclick="setDirection('RIGHT')">➡️</button>
+      </div>
     </div>
 
     <footer onclick="devMode()">
-      Tap again anytime 🙂
+      Tap footer for Dev Mode 👩‍💻
     </footer>
   </div>
 
   <!-- JAVASCRIPT -->
   <script>
+    /* --- TERMINAL BOOT SEQUENCE --- */
     const lines = [
-      "Initializing JulesOS v1.0...",
-      "Loading core memories...",
-      "Compiling sibling-support module...",
-      "Running unit tests... ✔",
-      "Deploying Christmas build 🎄",
+      "Initializing JulesOS v2.0...",
+      "Checking birthday calendar... 🗓️",
+      "Calculating coolness level... 100%",
+      "Compiling birthday wishes...",
+      "Loading confetti cannons... 🎉",
+      "Baking digital cake... 🎂",
       "",
-      "✔ System ready."
+      "✔ System status: ANOTHER YEAR AWESOMER!"
     ];
 
     let i = 0;
@@ -121,25 +221,152 @@
       if (i < lines.length) {
         boot.textContent += lines[i] + "\n";
         i++;
-        setTimeout(typeLine, 500);
+        setTimeout(typeLine, 400);
       } else {
         setTimeout(() => {
           document.getElementById("terminal").style.display = "none";
           document.getElementById("main").style.display = "block";
-        }, 800);
+          triggerConfetti();
+          initGame();
+        }, 600);
       }
     }
 
     typeLine();
 
+    function triggerConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+    }
+
     function devMode() {
+      triggerConfetti();
       alert(
         "👩‍💻 Dev Mode Activated\n\n" +
-        "Status: Operational\n" +
-        "Errors: None\n" +
-        "Favorite Sibling: You 😉"
+        "Status: Birthday Mode Operational\n" +
+        "Level: Up! 🎈\n" +
+        "Favorite Sibling: You, obviously 😉"
       );
     }
+
+    /* --- SNAKE GAME CODE --- */
+    const canvas = document.getElementById("game-board");
+    const ctx = canvas.getContext("2d");
+    const gridSize = 14;
+    const tileCount = canvas.width / gridSize;
+
+    let snake = [{ x: 10, y: 10 }];
+    let food = { x: 5, y: 5 };
+    let dx = 1;
+    let dy = 0;
+    let score = 0;
+    let gameInterval = null;
+
+    function initGame() {
+      snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }];
+      score = 0;
+      dx = 1;
+      dy = 0;
+      document.getElementById("score").textContent = score;
+      placeFood();
+      if (gameInterval) clearInterval(gameInterval);
+      gameInterval = setInterval(gameLoop, 130);
+    }
+
+    function placeFood() {
+      food.x = Math.floor(Math.random() * tileCount);
+      food.y = Math.floor(Math.random() * tileCount);
+    }
+
+    function gameLoop() {
+      updateSnake();
+      if (checkGameOver()) {
+        alert(`Game Over! Final Birthday Score: ${score} 🎂`);
+        initGame();
+        return;
+      }
+      drawGame();
+    }
+
+    function updateSnake() {
+      const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+      snake.unshift(head);
+
+      // Check if ate food
+      if (head.x === food.x && head.y === food.y) {
+        score += 1;
+        document.getElementById("score").textContent = score;
+        triggerConfetti();
+        placeFood();
+      } else {
+        snake.pop();
+      }
+    }
+
+    function checkGameOver() {
+      const head = snake[0];
+      // Wall collision
+      if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+        return true;
+      }
+      // Self collision
+      for (let i = 1; i < snake.length; i++) {
+        if (head.x === snake[i].x && head.y === snake[i].y) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function drawGame() {
+      // Clear board
+      ctx.fillStyle = "#020617";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw Snake
+      snake.forEach((part, index) => {
+        ctx.fillStyle = index === 0 ? "#38bdf8" : "#0284c7";
+        ctx.beginPath();
+        ctx.roundRect(
+          part.x * gridSize + 1, 
+          part.y * gridSize + 1, 
+          gridSize - 2, 
+          gridSize - 2, 
+          4
+        );
+        ctx.fill();
+      });
+
+      // Draw Cake Emoji Food
+      ctx.font = `${gridSize}px serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(
+        "🎂", 
+        food.x * gridSize + gridSize / 2, 
+        food.y * gridSize + gridSize / 2 + 1
+      );
+    }
+
+    function setDirection(dir) {
+      if (dir === 'UP' && dy === 0) { dx = 0; dy = -1; }
+      if (dir === 'DOWN' && dy === 0) { dx = 0; dy = 1; }
+      if (dir === 'LEFT' && dx === 0) { dx = -1; dy = 0; }
+      if (dir === 'RIGHT' && dx === 0) { dx = 1; dy = 0; }
+    }
+
+    // Keyboard controls
+    document.addEventListener("keydown", (e) => {
+      if (["ArrowUp", "KeyW"].includes(e.code)) setDirection('UP');
+      if (["ArrowDown", "KeyS"].includes(e.code)) setDirection('DOWN');
+      if (["ArrowLeft", "KeyA"].includes(e.code)) setDirection('LEFT');
+      if (["ArrowRight", "KeyD"].includes(e.code)) setDirection('RIGHT');
+    });
   </script>
 
 </body>
