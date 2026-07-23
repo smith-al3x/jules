@@ -130,20 +130,30 @@
       touch-action: none;
     }
 
-    /* OVERLAY FOR DORMANT / READY STATE */
+    /* OVERLAY FOR DORMANT / WIN / GAME OVER STATE */
     #game-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(2, 6, 23, 0.85);
+      background: rgba(2, 6, 23, 0.88);
       border-radius: 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       color: #e5e7eb;
+      padding: 16px;
+    }
+
+    #win-message {
+      font-size: 1.15rem;
+      font-weight: bold;
+      color: #38bdf8;
+      margin-bottom: 12px;
+      display: none;
+      line-height: 1.4;
     }
 
     /* MOBILE CONTROLS */
@@ -207,11 +217,12 @@
     <!-- EMBEDDED SNAKE MINI GAME -->
     <div class="game-card">
       <h2>🎂 Birthday Cake Snake</h2>
-      <div class="score-board" id="score-text">Press Start to play!</div>
+      <div class="score-board" id="score-text">Press Start to play! Goal: 24 Cakes 🎂</div>
       
       <div class="canvas-container">
         <canvas id="game-board" width="280" height="280"></canvas>
         <div id="game-overlay">
+          <div id="win-message">🏆 Congrats you are the youngest person EVER! 🏆</div>
           <button class="start-btn" id="start-btn" onclick="startGame()">▶ Start Game</button>
         </div>
       </div>
@@ -264,11 +275,11 @@
 
     typeLine();
 
-    function triggerConfetti() {
+    function triggerConfetti(count = 100) {
       if (typeof confetti === 'function') {
         confetti({
-          particleCount: 100,
-          spread: 70,
+          particleCount: count,
+          spread: 80,
           origin: { y: 0.6 }
         });
       }
@@ -288,11 +299,13 @@
     const canvas = document.getElementById("game-board");
     const ctx = canvas.getContext("2d");
     const overlay = document.getElementById("game-overlay");
+    const winMsg = document.getElementById("win-message");
     const scoreText = document.getElementById("score-text");
     const startBtn = document.getElementById("start-btn");
 
     const gridSize = 14;
     const tileCount = canvas.width / gridSize;
+    const WINNING_SCORE = 24;
 
     let snake = [];
     let food = { x: 5, y: 5 };
@@ -313,7 +326,8 @@
       dx = 1;
       dy = 0;
       gameRunning = true;
-      scoreText.textContent = "Eat cakes to celebrate! Score: 0";
+      scoreText.textContent = `Score: 0 / ${WINNING_SCORE} 🎂`;
+      winMsg.style.display = "none";
       overlay.style.display = "none";
       placeFood();
       if (gameInterval) clearInterval(gameInterval);
@@ -328,7 +342,7 @@
     function gameLoop() {
       updateSnake();
       if (checkGameOver()) {
-        endGame();
+        endGame(false);
         return;
       }
       drawGame();
@@ -340,8 +354,15 @@
 
       if (head.x === food.x && head.y === food.y) {
         score += 1;
-        scoreText.textContent = `Eat cakes to celebrate! Score: ${score}`;
-        triggerConfetti();
+        scoreText.textContent = `Score: ${score} / ${WINNING_SCORE} 🎂`;
+        
+        // WIN CONDITION AT 24
+        if (score >= WINNING_SCORE) {
+          endGame(true);
+          return;
+        }
+
+        triggerConfetti(40);
         placeFood();
       } else {
         snake.pop();
@@ -361,11 +382,21 @@
       return false;
     }
 
-    function endGame() {
+    function endGame(isWin) {
       clearInterval(gameInterval);
       gameRunning = false;
-      scoreText.textContent = `Game Over! Final Score: ${score} 🎂`;
-      startBtn.textContent = "🔄 Play Again";
+      
+      if (isWin) {
+        scoreText.textContent = `🎉 You Won! Final Score: ${WINNING_SCORE} 🎂`;
+        winMsg.style.display = "block";
+        startBtn.textContent = "🔄 Play Again";
+        triggerConfetti(250);
+      } else {
+        scoreText.textContent = `Game Over! Final Score: ${score} 🎂`;
+        winMsg.style.display = "none";
+        startBtn.textContent = "🔄 Play Again";
+      }
+      
       overlay.style.display = "flex";
     }
 
